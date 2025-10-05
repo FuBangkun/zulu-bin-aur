@@ -1,0 +1,21 @@
+pkgbase = zulu-8-bin
+	pkgdesc = Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.
+	pkgver = 8.0.462
+	pkgrel = 1
+	url = https://www.azul.com/downloads/
+	install = zulu-8-bin.install
+	arch = x86_64
+	license = custom
+	depends = java-environment-common>=3
+	depends = java-runtime-common>=3
+	depends = ca-certificates-utils
+	provides = java-environment=8
+	provides = java-environment-openjdk=8
+	provides = java-runtime-headless=8
+	provides = java-runtime-headless-openjdk=8
+	provides = java-runtime=8
+	provides = java-runtime-openjdk=8
+	source_x86_64 = https://cdn.azul.com/zulu/bin/zulu8.88.0.19-ca-jdk8.0.462-linux_x64.tar.gz
+	sha256sums_x86_64 = af194163bd9c870321f06b134f447869daafe6aef5b92b49d15b2fbc03a3b999
+
+pkgname = zulu-8-bin
