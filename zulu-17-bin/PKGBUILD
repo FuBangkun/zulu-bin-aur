@@ -1,11 +1,11 @@
-_java_ver=8
+_java_ver=17
 _jdkname="zulu-${_java_ver}"
-_zulu_build="8.88.0.19-ca"
+_zulu_build="${_java_ver}.60.17-ca"
 pkgname="${_jdkname}-bin"
-pkgver="8.0.462"
+pkgver="${_java_ver}.0.16"
 pkgrel=1
 pkgdesc='Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.'
-arch=('x86_64')
+arch=('aarch64' 'x86_64')
 url='https://www.azul.com/downloads/'
 license=('custom')
 depends=(
@@ -22,13 +22,19 @@ provides=(
   "java-runtime-openjdk=$_java_ver"
 )
 install="$pkgname.install"
+source_aarch64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_aarch64.tar.gz")
 source_x86_64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_x64.tar.gz")
-sha256sums_x86_64=('af194163bd9c870321f06b134f447869daafe6aef5b92b49d15b2fbc03a3b999')
+sha256sums_aarch64=('1cbb51dc9400814b8fbb79252762af5eba1f556e558128f2a4fca906b2ed04c8')
+sha256sums_x86_64=('e70822e4b77a9ffd57015b55f4bb645bba97b8f5247a792eceb95dbc7a5a55ab')
 
 _jvmdir="/usr/lib/jvm/${_jdkname}"
 
 package() {
-  cd "$srcdir/zulu${_zulu_build}-jdk${pkgver}-linux_x64"
+  if [ "${CARCH}" = "aarch64" ]; then
+    cd "$srcdir/zulu${_zulu_build}-jdk${pkgver}-linux_aarch64"
+  else
+    cd "$srcdir/zulu${_zulu_build}-jdk${pkgver}-linux_x64"
+  fi
 
   install -dm 755 "${pkgdir}/${_jvmdir}"
   cp -a . "${pkgdir}/${_jvmdir}/"
