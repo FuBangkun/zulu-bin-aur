@@ -1,0 +1,24 @@
+pkgbase = zulu-11-bin
+	pkgdesc = Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.
+	pkgver = 11.0.28
+	pkgrel = 1
+	url = https://www.azul.com/downloads/
+	install = zulu-11-bin.install
+	arch = aarch64
+	arch = x86_64
+	license = custom
+	depends = java-environment-common>=3
+	depends = java-runtime-common>=3
+	depends = ca-certificates-utils
+	provides = java-environment=11
+	provides = java-environment-openjdk=11
+	provides = java-runtime-headless=11
+	provides = java-runtime-headless-openjdk=11
+	provides = java-runtime=11
+	provides = java-runtime-openjdk=11
+	source_aarch64 = https://cdn.azul.com/zulu/bin/zulu11.82.19-ca-jdk11.0.28-linux_aarch64.tar.gz
+	sha256sums_aarch64 = d813343b40aaa41034cd0ae530a97e024a2fbb044a7d677ebf6f3e81d71e1e60
+	source_x86_64 = https://cdn.azul.com/zulu/bin/zulu11.82.19-ca-jdk11.0.28-linux_x64.tar.gz
+	sha256sums_x86_64 = b34a75da63dab5f61ac342290000c1a51de3023049e2b30da89393f5f0b79759
+
+pkgname = zulu-11-bin

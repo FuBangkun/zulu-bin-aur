@@ -1,0 +1,67 @@
+_zulu_build="11.82.19-ca"
+pkgname="zulu-11-bin"
+pkgver="11.0.28"
+pkgrel=1
+pkgdesc='Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.'
+arch=('aarch64' 'x86_64')
+url='https://www.azul.com/downloads/'
+license=('custom')
+depends=(
+  'java-environment-common>=3'
+  'java-runtime-common>=3'
+  'ca-certificates-utils'
+)
+provides=(
+  "java-environment=11"
+  "java-environment-openjdk=11"
+  "java-runtime-headless=11"
+  "java-runtime-headless-openjdk=11"
+  "java-runtime=11"
+  "java-runtime-openjdk=11"
+)
+install="$pkgname.install"
+source_aarch64=("https://cdn.azul.com/zulu/bin/zulu11.82.19-ca-jdk11.0.28-linux_aarch64.tar.gz")
+source_x86_64=("https://cdn.azul.com/zulu/bin/zulu11.82.19-ca-jdk11.0.28-linux_x64.tar.gz")
+sha256sums_aarch64=('d813343b40aaa41034cd0ae530a97e024a2fbb044a7d677ebf6f3e81d71e1e60')
+sha256sums_x86_64=('b34a75da63dab5f61ac342290000c1a51de3023049e2b30da89393f5f0b79759')
+
+_jvmdir="/usr/lib/jvm/zulu-11"
+
+package() {
+  if [ "${CARCH}" = "aarch64" ]; then
+    cd "$srcdir/zulu${_zulu_build}-jdk${pkgver}-linux_aarch64"
+  else
+    cd "$srcdir/zulu${_zulu_build}-jdk${pkgver}-linux_x64"
+  fi
+
+  install -dm 755 "${pkgdir}/${_jvmdir}"
+  cp -a . "${pkgdir}/${_jvmdir}/"
+
+  # based on java-openjdk package_jdk-openjdk
+  # https://github.com/archlinux/svntogit-packages/blob/3f6aa8ddd98f728a9b0701288a933d16f0e8bbaf/trunk/PKGBUILD
+
+  # Conf
+  install -dm 755 "${pkgdir}/etc"
+  cp -r conf "${pkgdir}/etc/zulu-11"
+  rm -r "${pkgdir}/${_jvmdir}/conf"
+  ln -s "/etc/zulu-11" "${pkgdir}/${_jvmdir}/conf"
+
+  # Legal
+  install -dm 755 "${pkgdir}/usr/share/licenses"
+  cp -r legal "${pkgdir}/usr/share/licenses/zulu-11"
+  rm -r "${pkgdir}/${_jvmdir}/legal"
+  ln -s "/usr/share/licenses/zulu-11" "${pkgdir}/${_jvmdir}/legal"
+
+  # Man pages
+  for f in bin/*; do
+    f=$(basename "${f}")
+    _man=man/man1/"${f}.1"
+    test -f "${_man}" && install -Dm 644 "${_man}" "${pkgdir}/usr/share/man/man1/${f}-zulu-11.1"
+  done
+  rm -r "${pkgdir}/${_jvmdir}/man"
+  ln -s /usr/share/man "${pkgdir}/${_jvmdir}/man"
+
+  # Link JKS keystore from ca-certificates-utils
+  rm -f "${pkgdir}/${_jvmdir}/lib/security/cacerts"
+  ln -sf /etc/ssl/certs/java/cacerts "${pkgdir}/${_jvmdir}/lib/security/cacerts"
+}

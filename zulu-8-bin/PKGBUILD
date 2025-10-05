@@ -1,8 +1,6 @@
-_java_ver=8
-_jdkname="zulu-${_java_ver}"
-_zulu_build="${_java_ver}.88.0.19-ca"
-pkgname="${_jdkname}-bin"
-pkgver="${_java_ver}.0.462"
+_zulu_build="8.88.0.19-ca"
+pkgname="zulu-8-bin"
+pkgver="8.0.462"
 pkgrel=1
 pkgdesc='Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.'
 arch=('aarch64' 'x86_64')
@@ -16,20 +14,20 @@ depends=(
   'xdg-utils' 'hicolor-icon-theme'
 )
 provides=(
-  "java-environment=$_java_ver"
-  "java-environment-openjdk=$_java_ver"
-  "java-runtime-headless=$_java_ver"
-  "java-runtime-headless-openjdk=$_java_ver"
-  "java-runtime=$_java_ver"
-  "java-runtime-openjdk=$_java_ver"
+  "java-environment=8"
+  "java-environment-openjdk=8"
+  "java-runtime-headless=8"
+  "java-runtime-headless-openjdk=8"
+  "java-runtime=8"
+  "java-runtime-openjdk=8"
 )
 install="$pkgname.install"
-source_aarch64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_aarch64.tar.gz")
-source_x86_64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_x64.tar.gz")
+source_aarch64=("https://cdn.azul.com/zulu/bin/zulu8.88.0.19-ca-jdk8.0.462-linux_aarch64.tar.gz")
+source_x86_64=("https://cdn.azul.com/zulu/bin/zulu8.88.0.19-ca-jdk8.0.462-linux_x64.tar.gz")
 sha256sums_aarch64=('7f3a4f6a24f764259db98c69e759bf7cae95ce957dadd74117ed5d6037fcfcc7')
 sha256sums_x86_64=('af194163bd9c870321f06b134f447869daafe6aef5b92b49d15b2fbc03a3b999')
 
-_jvmdir="/usr/lib/jvm/${_jdkname}"
+_jvmdir="/usr/lib/jvm/zulu-8"
 
 # Upstream config files that should go to etc and get backup
 _conf_files=(
@@ -69,11 +67,11 @@ package() {
   mv "${pkgdir}${_jvmdir}"/jre/lib/management/snmp.acl{.template,}
 
   # Conf
-  install -dm 755 "${pkgdir}/etc/${_jdkname}"
+  install -dm 755 "${pkgdir}/etc/zulu-8"
   for f in "${_conf_files[@]}"; do
     _file="${_jvmdir}/jre/lib/$f"
-    install -D -m 644 "${pkgdir}${_file}" "${pkgdir}/etc/${_jdkname}/$f"
-    ln -sf "/etc/${_jdkname}/$f" "${pkgdir}${_file}"
+    install -D -m 644 "${pkgdir}${_file}" "${pkgdir}/etc/zulu-8/$f"
+    ln -sf "/etc/zulu-8/$f" "${pkgdir}${_file}"
   done
 
   # Install license

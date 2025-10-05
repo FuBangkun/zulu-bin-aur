@@ -1,8 +1,6 @@
-_java_ver=21
-_jdkname="zulu-${_java_ver}"
-_zulu_build="${_java_ver}.44.17-ca"
-pkgname="${_jdkname}-bin"
-pkgver="${_java_ver}.0.8"
+_zulu_build="21.44.17-ca"
+pkgname="zulu-21-bin"
+pkgver="21.0.8"
 pkgrel=1
 pkgdesc='Azul Zulu builds of OpenJDK are open source, TCK-tested and certified builds of OpenJDK.'
 arch=('aarch64' 'x86_64')
@@ -14,20 +12,20 @@ depends=(
   'ca-certificates-utils'
 )
 provides=(
-  "java-environment=$_java_ver"
-  "java-environment-openjdk=$_java_ver"
-  "java-runtime-headless=$_java_ver"
-  "java-runtime-headless-openjdk=$_java_ver"
-  "java-runtime=$_java_ver"
-  "java-runtime-openjdk=$_java_ver"
+  "java-environment=21"
+  "java-environment-openjdk=21"
+  "java-runtime-headless=21"
+  "java-runtime-headless-openjdk=21"
+  "java-runtime=21"
+  "java-runtime-openjdk=21"
 )
 install="$pkgname.install"
-source_aarch64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_aarch64.tar.gz")
-source_x86_64=("https://cdn.azul.com/zulu/bin/zulu${_zulu_build}-jdk${pkgver}-linux_x64.tar.gz")
+source_aarch64=("https://cdn.azul.com/zulu/bin/zulu21.44.17-ca-jdk21.0.8-linux_aarch64.tar.gz")
+source_x86_64=("https://cdn.azul.com/zulu/bin/zulu21.44.17-ca-jdk21.0.8-linux_x64.tar.gz")
 sha256sums_aarch64=('ff7f2edd1d5c153cb6cb493a3aa3523453e29a05ec513b25c24aa1477ec0c722')
 sha256sums_x86_64=('63f56bbb46958cf57352fba08f2755e0953799195e5545acc0c8a92920beff1e')
 
-_jvmdir="/usr/lib/jvm/${_jdkname}"
+_jvmdir="/usr/lib/jvm/zulu-21"
 
 package() {
   if [ "${CARCH}" = "aarch64" ]; then
@@ -44,21 +42,21 @@ package() {
 
   # Conf
   install -dm 755 "${pkgdir}/etc"
-  cp -r conf "${pkgdir}/etc/${_jdkname}"
+  cp -r conf "${pkgdir}/etc/zulu-21"
   rm -r "${pkgdir}/${_jvmdir}/conf"
-  ln -s "/etc/${_jdkname}" "${pkgdir}/${_jvmdir}/conf"
+  ln -s "/etc/zulu-21" "${pkgdir}/${_jvmdir}/conf"
 
   # Legal
   install -dm 755 "${pkgdir}/usr/share/licenses"
-  cp -r legal "${pkgdir}/usr/share/licenses/${_jdkname}"
+  cp -r legal "${pkgdir}/usr/share/licenses/zulu-21"
   rm -r "${pkgdir}/${_jvmdir}/legal"
-  ln -s "/usr/share/licenses/${_jdkname}" "${pkgdir}/${_jvmdir}/legal"
+  ln -s "/usr/share/licenses/zulu-21" "${pkgdir}/${_jvmdir}/legal"
 
   # Man pages
   for f in bin/*; do
     f=$(basename "${f}")
     _man=man/man1/"${f}.1"
-    test -f "${_man}" && install -Dm 644 "${_man}" "${pkgdir}/usr/share/man/man1/${f}-${_jdkname}.1"
+    test -f "${_man}" && install -Dm 644 "${_man}" "${pkgdir}/usr/share/man/man1/${f}-zulu-21.1"
   done
   rm -r "${pkgdir}/${_jvmdir}/man"
   ln -s /usr/share/man "${pkgdir}/${_jvmdir}/man"
